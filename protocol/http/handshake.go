@@ -23,7 +23,7 @@ func HandleConnectionEx(
 	ctx context.Context,
 	conn net.Conn,
 	reader *std_bufio.Reader,
-	authenticator *auth.Authenticator,
+	authenticator auth.Verifier,
 	handler N.TCPConnectionHandlerEx,
 	source M.Socksaddr,
 	onClose N.CloseHandlerFunc,
