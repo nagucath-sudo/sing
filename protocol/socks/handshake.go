@@ -247,6 +247,11 @@ func HandleConnectionEx(
 			if err != nil {
 				return E.Cause(err, "socks5: write response")
 			}
+			// The caller may set a short deadline for the initial handshake.
+			// Once UDP ASSOCIATE is accepted, the TCP control connection must
+			// remain available until the association closes; otherwise that
+			// handshake deadline would tear down an otherwise healthy UDP flow.
+			_ = conn.SetDeadline(time.Time{})
 			associateConn := NewAssociatePacketConn(bufio.NewServerPacketConn(udpConn), M.Socksaddr{}, conn)
 			go func() {
 				var buffer [1]byte
