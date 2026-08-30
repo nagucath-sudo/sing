@@ -55,7 +55,7 @@ func HandleConnectionEx(
 				authorization := request.Header.Get("Proxy-Authorization")
 				switch {
 				case username != "":
-					return E.New("http: authentication failed, username=", username, ", password=", password)
+					return E.New("http: authentication failed, username=", username)
 				case authorization != "":
 					return E.New("http: authentication failed, Proxy-Authorization=", authorization)
 				default:

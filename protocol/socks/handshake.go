@@ -125,7 +125,7 @@ func ClientHandshake5(conn io.ReadWriter, command byte, destination M.Socksaddr,
 
 func HandleConnectionEx(
 	ctx context.Context, conn net.Conn, reader *std_bufio.Reader,
-	authenticator *auth.Authenticator,
+	authenticator auth.Verifier,
 	handler HandlerEx,
 	packetListener PacketListener,
 	udpTimeout time.Duration,
@@ -215,7 +215,7 @@ func HandleConnectionEx(
 				return err
 			}
 			if response.Status != socks5.UsernamePasswordStatusSuccess {
-				return E.New("socks5: authentication failed, username=", usernamePasswordAuthRequest.Username, ", password=", usernamePasswordAuthRequest.Password)
+				return E.New("socks5: authentication failed, username=", usernamePasswordAuthRequest.Username)
 			}
 		}
 		var request socks5.Request

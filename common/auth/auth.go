@@ -7,9 +7,19 @@ type User struct {
 	Password string
 }
 
+// Verifier is the minimal reverse-control contract required by protocol
+// servers. Authenticator remains the standard static implementation; an
+// embedding application may supply a verifier backed by its own immutable
+// runtime snapshot without moving persistence into the protocol package.
+type Verifier interface {
+	Verify(username string, password string) bool
+}
+
 type Authenticator struct {
 	userMap map[string][]string
 }
+
+var _ Verifier = (*Authenticator)(nil)
 
 func NewAuthenticator(users []User) *Authenticator {
 	if len(users) == 0 {
